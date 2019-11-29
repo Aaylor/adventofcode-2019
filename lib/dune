@@ -1,0 +1,12 @@
+
+(library
+ (name aoc)
+ (modules
+  int_map
+  int_set
+  setup_logs
+  string_map
+  string_set)
+ (private_modules setup_logs)
+ (libraries logs lwt lwt.unix unix)
+ (preprocess (pps lwt_ppx)))
