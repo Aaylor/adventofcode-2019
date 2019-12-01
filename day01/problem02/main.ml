@@ -24,7 +24,20 @@
 (*****************************************************************************)
 
 let eval_fuel mass = (mass / 3) - 2
-let to_fuel input = eval_fuel (int_of_string input)
+
+let eval_complete_fuel fuel =
+  let rec aux_eval_complete_fuel acc n =
+    let fuel = eval_fuel n in
+    if fuel <= 0 then acc
+    else aux_eval_complete_fuel (acc + fuel) fuel
+  in
+  fuel + aux_eval_complete_fuel 0 fuel
+
+let to_fuel input =
+  (* For each module mass, we evaluate the necessary fuel; and then we evaluate
+     the necessary fuel for the fuel. *)
+  eval_fuel (int_of_string input)
+  |> eval_complete_fuel
 
 let main =
   let%lwt descr = Lwt_unix.openfile "input.txt"  Unix.[ O_RDONLY ] 0640 in
@@ -37,4 +50,4 @@ let main =
 
 let () =
   let result = Lwt_main.run main in
-  Format.printf "RESULT: %d@." result
+  Logs.app (fun m -> m "RESULT: %d" result)
