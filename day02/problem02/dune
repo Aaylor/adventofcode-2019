@@ -1,0 +1,6 @@
+(executable
+ (name main)
+ (modes exe)
+ (libraries aoc)
+ (link_flags -linkall)
+ (preprocess (pps lwt_ppx)))
